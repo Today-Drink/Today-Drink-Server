@@ -1,11 +1,13 @@
 package com.example.todaydrinkserver.shop;
 
+import com.example.todaydrinkserver.menu.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -39,5 +41,6 @@ public class Shop {
     @Column(name = "longitude")
     private Double longitude;
 
-
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Menu> menus;
 }
