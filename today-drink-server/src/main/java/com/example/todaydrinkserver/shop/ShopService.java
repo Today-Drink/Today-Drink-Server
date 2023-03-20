@@ -1,5 +1,7 @@
 package com.example.todaydrinkserver.shop;
 
+import com.example.todaydrinkserver.menu.Menu;
+import com.example.todaydrinkserver.menu.MenuDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,19 @@ public class ShopService {
     }
     @Transactional
     public ShopDto getShop(Long id){
-        Shop shopEntity = shopRepository.findById(id).get();
+        Shop shopEntity = shopRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Invalid shop ID"));
+
+        List<MenuDto> menuDtoList = new ArrayList<>();
+        for (Menu menu : shopEntity.getMenus()) {
+            MenuDto menuDto = MenuDto.builder()
+                    .name(menu.getName())
+                    .price(menu.getPrice())
+                    .shopName(menu.getShopName())
+                    .build();
+            menuDtoList.add(menuDto);
+        }
+
         ShopDto shopDto = ShopDto.builder()
                 .name(shopEntity.getName())
                 .classify(shopEntity.getClassify())
@@ -57,6 +71,7 @@ public class ShopService {
                 .address(shopEntity.getAddress())
                 .latitude(shopEntity.getLatitude())
                 .longitude(shopEntity.getLongitude())
+                .menus(menuDtoList)
                 .build();
         return shopDto;
     }
