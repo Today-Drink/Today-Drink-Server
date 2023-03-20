@@ -1,6 +1,5 @@
 package com.example.todaydrinkserver.shop;
 
-import com.example.todaydrinkserver.menu.Menu;
 import com.example.todaydrinkserver.menu.MenuDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,14 +53,14 @@ public class ShopService {
                 new IllegalArgumentException("Invalid shop ID"));
 
         List<MenuDto> menuDtoList = new ArrayList<>();
-        for (Menu menu : shopEntity.getMenus()) {
+        shopEntity.getMenus().forEach(menu -> {
             MenuDto menuDto = MenuDto.builder()
                     .name(menu.getName())
                     .price(menu.getPrice())
                     .shopName(menu.getShopName())
                     .build();
             menuDtoList.add(menuDto);
-        }
+        });
 
         ShopDto shopDto = ShopDto.builder()
                 .name(shopEntity.getName())
@@ -74,6 +73,24 @@ public class ShopService {
                 .menus(menuDtoList)
                 .build();
         return shopDto;
+    }
+    @Transactional
+    public List<ResponseShop> getShopByFiltering(RequestShop requestShop){
+        List<Shop> shops= shopRepository.findShopByFiltering(
+                requestShop.getClassify(),
+                requestShop.getNum(),
+                requestShop.getEndTime());
+
+        List<ResponseShop> responseShopList = new ArrayList<>();
+        shops.forEach(v-> {
+            responseShopList.add(ResponseShop.builder()
+                    .name(v.getName())
+                    .address(v.getAddress())
+                    .latitude(v.getLatitude())
+                    .longitude(v.getLongitude())
+                    .build());
+        });
+        return responseShopList;
     }
     @Transactional
     public String updateShop(Long id, ShopDto shopDto){
