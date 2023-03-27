@@ -46,9 +46,24 @@ public class ShopController {
             @ApiResponse(code = 404, message = "error")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ShopDto> getShop(@PathVariable("id") Long id){
+    public ResponseEntity<ShopDto> getShopById(@PathVariable("id") Long id){
         ShopDto shopDto = shopService.getShop(id);
         return ResponseEntity.status(HttpStatus.OK).body(shopDto);
+    }
+
+    @ApiOperation(value = "Get shops By Filtering",
+            notes = "카테고리(String) ex)" + "{이자카야, 치킨, 포차, 해산물, 고기&구이, 칵테일, 맥주, 기타},\n" +
+            "인원수(integer) 2~4-> 4, 4~6 -> 6, 7인 이상 ->7\n" +
+            "끝나는 시간(integer) ex)~22 -> 22, ~00 -> 24 , ~02 -> 26, ~04 ->28\n" +
+                    "******형식 꼭 맞춰서 데이터 넘겨줄 것*******")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "error")
+    })
+    @PostMapping("/lists")
+    public ResponseEntity<List<ResponseShop>> getShopByFiltering(@RequestBody RequestShop requestShop){
+        List<ResponseShop> responseShopList = shopService.getShopByFiltering(requestShop);
+        return ResponseEntity.status(HttpStatus.OK).body(responseShopList);
     }
 
     @ApiOperation(value = "Update a shop by ID", notes = "ID를 통해 받은 가게의 정보 수정한다.")
