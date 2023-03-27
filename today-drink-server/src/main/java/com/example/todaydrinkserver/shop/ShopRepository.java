@@ -16,4 +16,6 @@ public interface ShopRepository extends JpaRepository<Shop,Long> {
             "s.longitude = :longitude" +
             " where s.id = :id")
     void updateShop(Long id, String classify,Integer num, Integer endTime, String address, Double latitude, Double longitude);
+
+    Optional<Shop> findByName(String shopName);
 }
