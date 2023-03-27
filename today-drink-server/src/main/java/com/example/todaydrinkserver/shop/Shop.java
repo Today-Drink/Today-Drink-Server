@@ -43,4 +43,5 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> menus;
+
 }
