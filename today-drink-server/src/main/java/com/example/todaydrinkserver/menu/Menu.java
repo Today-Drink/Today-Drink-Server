@@ -28,6 +28,9 @@ public class Menu {
 
     @Column(name = "shop_name")
     private String shopName;
+
+    @Column(name = "category")
+    private String category;
     @ManyToOne(fetch = FetchType.LAZY)
     private Shop shop;
 }

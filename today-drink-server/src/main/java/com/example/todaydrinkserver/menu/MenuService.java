@@ -28,6 +28,20 @@ public class MenuService {
     }
 
     @Transactional
+    public List<MenuDto> getCategoryMenus(String category){
+        List<Menu> menuList = menuRepository.findByCategory(category);
+        List<MenuDto> menuDtoList = new ArrayList<>();
+        menuList.forEach(v->{
+            menuDtoList.add(MenuDto.builder()
+                    .name(v.getName())
+                    .price(v.getPrice())
+                    .image(v.getImage())
+                    .shopName(v.getShopName())
+                    .build());
+        });
+        return menuDtoList;
+    }
+    @Transactional
     public MenuDto getMenuById(Long id) {
         Optional<Menu> optionalMenu = menuRepository.findById(id);
         if (optionalMenu.isPresent()) {
