@@ -1,5 +1,7 @@
 package com.example.todaydrinkserver.shop;
 
+import com.example.todaydrinkserver.menu.MenuDto;
+import com.example.todaydrinkserver.menu.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/shops")

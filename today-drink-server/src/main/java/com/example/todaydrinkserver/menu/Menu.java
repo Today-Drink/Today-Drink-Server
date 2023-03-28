@@ -31,6 +31,8 @@ public class Menu {
 
     @Column(name = "category")
     private String category;
+    @Column(name="best")
+    private Boolean best;
     @ManyToOne(fetch = FetchType.LAZY)
     private Shop shop;
 }
