@@ -1,61 +1,65 @@
 package com.example.todaydrinkserver.user;
 
-import com.example.todaydrinkserver.menu.MenuDto;
 import com.example.todaydrinkserver.shop.ShopDto;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/users")
-@Tag(name = "User Service", description = "User API")
+@Api(tags="User Controller")
 public class UserController {
-    @Autowired
     private final UserService userService;
-    @Operation(summary = "user info", description = "user의 정보")
+    @ApiOperation(value = "user info", notes = "user의 정보")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MenuDto.class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 404, message = "error")
     })
-    @Parameter(name = "id", description = "사용자 id", example = "1L")
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/view/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> viewUser(@PathVariable("id") Long userSn){
         UserDto userDto = userService.getUser(userSn);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<String> likeShop(@PathVariable("userId") String userId, @RequestBody ShopDto shopDto){
-        String status = userService.registerFavoriteShop(userId, shopDto.getName());
+    @ApiOperation(value = "choose favorite shop", notes = "관심있는 shop 등록")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 404, message = "error")
+    })
+    @PostMapping("/likeshop")
+    public ResponseEntity<String> likeShop(@RequestBody RequestFavoriteShop requestFavoriteShop){
+        String status = userService.registerFavoriteShop(requestFavoriteShop.getUserId(), requestFavoriteShop.getShopName());
         return ResponseEntity.status(HttpStatus.OK).body(status);
     }
 
+    @ApiOperation(value = "join", notes = "회원가입")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 404, message = "error")
+    })
     @PostMapping("/join")
     public String join(@RequestBody UserDto userDto){
         String status = userService.registerUser(userDto);
         return status;
     }
+
+    @ApiOperation(value = "login", notes = "로그인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 404, message = "error")
+    })
     @PostMapping("/login")
-    public String login(@RequestBody UserDto userDto){
-        String token = userService.login(userDto);
+    public String login(@RequestBody RequestLogin requestLogin){
+        String token = userService.login(requestLogin);
         return token;
     }
 }

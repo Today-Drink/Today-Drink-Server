@@ -20,3 +20,8 @@ spring:
   sql:
     init:
       platform: postgres
+
+jwt:
+  header : Authorization
+  secret : dG9kYXlkcmluay1qd3Qtc2VjcmV0LXRvZGF5ZHJpbmstand0LXNlY3JldC10b2RheWRyaW5rLWp3dC1zZWNyZXQ=
+  token-validity-in-seconds : 86400
