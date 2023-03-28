@@ -1,5 +1,7 @@
-package com.example.todaydrinkserver.user;
+package com.example.todaydrinkserver.config;
 
+import com.example.todaydrinkserver.user.JwtAuthenticationFilter;
+import com.example.todaydrinkserver.user.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/test").authenticated()
+                //.antMatchers("/api/users/view/**","/api/users/likeshop/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**").permitAll()
                 .and()

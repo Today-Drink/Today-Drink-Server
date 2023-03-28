@@ -35,6 +35,17 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo());
     }
 
+    @Bean
+    public Docket userApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("users")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.example.todaydrinkserver.user"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo());
+    }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Today Drink Project API")
