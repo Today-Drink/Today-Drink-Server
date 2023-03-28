@@ -21,22 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
-    //private String secretKey = "myprojectsecret";
-    // 토큰 유효시간 30분
-    //private long tokenValidTime = 30 * 60 * 1000L;
-
     @Value(value = "${jwt.secret}")
     private String secretKey;
     @Value(value = "${jwt.token-validity-in-seconds}")
     private long tokenValidTime;
 
     private final UserDetailsService userDetailsService;
-
-    // 객체 초기화, secretKey를 Base64로 인코딩한다.
-//    @PostConstruct
-//    protected void init() {
-//    }
-
 
     // JWT 토큰 생성
     public String createToken(String userPk, List<String> roles) {
