@@ -15,27 +15,23 @@ public class MenuService {
     @Transactional
     public List<MenuDto> getAllMenus() {
         List<Menu> menuList = menuRepository.findAll();
-        List<MenuDto> menuDtoList = new ArrayList<>();
-        menuList.forEach(v ->{
-            menuDtoList.add(MenuDto.builder()
-                            .name(v.getName())
-                            .price(v.getPrice())
-                            .image(v.getImage())
-                            .shopName(v.getShopName())
-                            .build());
-        });
-        return menuDtoList;
+        return getMenuDtos(menuList);
     }
 
     @Transactional
     public List<MenuDto> getCategoryMenus(String category){
         List<Menu> menuList = menuRepository.findByCategory(category);
+        return getMenuDtos(menuList);
+    }
+
+    private List<MenuDto> getMenuDtos(List<Menu> menuList) {
         List<MenuDto> menuDtoList = new ArrayList<>();
         menuList.forEach(v->{
             menuDtoList.add(MenuDto.builder()
                     .name(v.getName())
                     .price(v.getPrice())
                     .image(v.getImage())
+                    .description(v.getDescription())
                     .shopName(v.getShopName())
                     .build());
         });
@@ -51,6 +47,7 @@ public class MenuService {
                     .name(menu.getName())
                     .price(menu.getPrice())
                     .image(menu.getImage())
+                    .description(menu.getDescription())
                     .shopName(menu.getShopName())
                     .build();
             return menuDto;
@@ -62,16 +59,7 @@ public class MenuService {
     @Transactional
     public List<MenuDto> getMenusByShopName(String shopName) {
         List<Menu> menus = menuRepository.findByShopName(shopName);
-        List<MenuDto> menuDtoList = new ArrayList<>();
-        menus.forEach(v ->{
-            menuDtoList.add(MenuDto.builder()
-                    .name(v.getName())
-                    .price(v.getPrice())
-                    .image(v.getImage())
-                    .shopName(v.getShopName())
-                    .build());
-        });
-        return menuDtoList;
+        return getMenuDtos(menus);
     }
 
     @Transactional
@@ -80,6 +68,7 @@ public class MenuService {
                 .name(menuDto.getName())
                 .price(menuDto.getPrice())
                 .image(menuDto.getImage())
+                .description(menuDto.getDescription())
                 .shopName(menuDto.getShopName())
                 .build();
         menuRepository.save(saveMenu);
@@ -93,6 +82,7 @@ public class MenuService {
             menuRepository.updateMenu(id,menuDto.getName(),
                     menuDto.getPrice(),
                     menuDto.getImage(),
+                    menuDto.getDescription(),
                     menuDto.getShopName());
             return "success";
         } else {

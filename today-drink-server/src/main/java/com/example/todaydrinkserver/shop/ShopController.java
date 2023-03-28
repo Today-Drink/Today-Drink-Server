@@ -43,7 +43,7 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.OK).body(shopDtoList);
     }
 
-    @ApiOperation(value = "Get a shop by ID", notes = "ID를 통해 특정 가게의 정보 조회한다.")
+    @ApiOperation(value = "Get a shop by ID", notes = "ID를 통해 특정 가게의 정보와 대표메뉴를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "error")

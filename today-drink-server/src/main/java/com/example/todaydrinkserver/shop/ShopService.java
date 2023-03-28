@@ -58,6 +58,7 @@ public class ShopService {
                 MenuDto menuDto = MenuDto.builder()
                         .name(menu.getName())
                         .price(menu.getPrice())
+                        .description(menu.getDescription())
                         .shopName(menu.getShopName())
                         .build();
                 menuDtoList.add(menuDto);
