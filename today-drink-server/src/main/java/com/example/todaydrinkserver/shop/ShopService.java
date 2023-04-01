@@ -94,10 +94,7 @@ public class ShopService {
     }
     @Transactional
     public String updateShop(Long id, ShopDto shopDto){
-        shopRepository.updateShop(id, shopDto.getClassify(),
-                shopDto.getEndTime(), shopDto.getNum(),
-                shopDto.getAddress(), shopDto.getLatitude(),
-                shopDto.getLongitude());
+        shopRepository.updateShop(id, shopDto);
         return "success";
     }
     @Transactional
