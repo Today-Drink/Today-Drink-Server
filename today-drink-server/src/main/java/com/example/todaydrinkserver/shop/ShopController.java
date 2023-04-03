@@ -55,7 +55,7 @@ public class ShopController {
             notes = "카테고리(String) ex)" + "{이자카야, 치킨, 포차, 해산물, 고기&구이, 칵테일, 맥주, 기타},\n" +
             "인원수(integer) 2~4-> 4, 4~6 -> 6, 7인 이상 ->7\n" +
             "끝나는 시간(integer) ex)~22 -> 22, ~00 -> 24 , ~02 -> 26, ~04 ->28\n" +
-                    "*****형식 꼭 맞춰서 데이터 넘겨줄 것*****")
+                    "******형식 꼭 맞춰서 데이터 넘겨줄 것******")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "error")
