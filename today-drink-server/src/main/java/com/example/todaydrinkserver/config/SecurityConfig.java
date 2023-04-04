@@ -1,7 +1,7 @@
 package com.example.todaydrinkserver.config;
 
-import com.example.todaydrinkserver.user.JwtAuthenticationFilter;
-import com.example.todaydrinkserver.user.JwtTokenProvider;
+import com.example.todaydrinkserver.jwt.JwtAuthenticationFilter;
+import com.example.todaydrinkserver.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

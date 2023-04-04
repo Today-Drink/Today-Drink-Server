@@ -1,5 +1,6 @@
 package com.example.todaydrinkserver.user;
 
+import com.example.todaydrinkserver.jwt.JwtTokenProvider;
 import com.example.todaydrinkserver.shop.ShopRepository;
 import com.example.todaydrinkserver.shop.Shop;
 import com.example.todaydrinkserver.shop.ShopDto;
@@ -21,8 +22,8 @@ public class UserService {
     private final FavoriteShopRepository favoriteShopRepository;
     private final ShopRepository shopRepository;
     @Transactional
-    public UserDto getUser(Long userSn){
-        Optional<User> user = userRepository.findById(userSn);
+    public UserDto getUser(String userId){
+        Optional<User> user = userRepository.findByUserId(userId);
         List<FavoriteShop> favoriteShops = favoriteShopRepository.findAllByUser(user.get());
         List<ShopDto> shopList = new ArrayList<>();
 

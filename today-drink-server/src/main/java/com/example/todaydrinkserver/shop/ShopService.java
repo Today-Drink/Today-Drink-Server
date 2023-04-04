@@ -54,12 +54,15 @@ public class ShopService {
 
         List<MenuDto> menuDtoList = new ArrayList<>();
         shopEntity.getMenus().forEach(menu -> {
-            MenuDto menuDto = MenuDto.builder()
-                    .name(menu.getName())
-                    .price(menu.getPrice())
-                    .shopName(menu.getShopName())
-                    .build();
-            menuDtoList.add(menuDto);
+            if(menu.getBest()){
+                MenuDto menuDto = MenuDto.builder()
+                        .name(menu.getName())
+                        .price(menu.getPrice())
+                        .description(menu.getDescription())
+                        .shopName(menu.getShopName())
+                        .build();
+                menuDtoList.add(menuDto);
+            }
         });
 
         ShopDto shopDto = ShopDto.builder()

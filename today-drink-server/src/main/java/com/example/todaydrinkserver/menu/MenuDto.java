@@ -15,4 +15,5 @@ public class MenuDto {
     private Integer price;
     private String image;
     private String shopName;
+    private String description;
 }

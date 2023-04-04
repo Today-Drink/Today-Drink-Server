@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/menus")
@@ -18,15 +20,21 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
-    @ApiOperation(value = "Get All menus", notes = "모든 메뉴를 조회한다.")
+    @ApiOperation(value = "Get All menus", notes = "카테고리 별로 전체 메뉴를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
     })
     @GetMapping("")
-    public ResponseEntity<List<MenuDto>> getAllMenus() {
-        List<MenuDto> menus = menuService.getAllMenus();
-        return ResponseEntity.status(HttpStatus.OK).body(menus);
+    public ResponseEntity<Map<String,Object>> getAllMenus() {
+        List<MenuDto> mainMenus = menuService.getCategoryMenus("main");
+        List<MenuDto> subMenus = menuService.getCategoryMenus("sub");
+        List<MenuDto> drinks = menuService.getCategoryMenus("drink");
+        Map<String, Object> result = new HashMap<>();
+        result.put("main",mainMenus);
+        result.put("sub",subMenus);
+        result.put("drink",drinks);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @ApiOperation(value = "Get a menu by id", notes = "id를 통해 특정 메뉴 조회한다.")
     @ApiResponses(value = {
