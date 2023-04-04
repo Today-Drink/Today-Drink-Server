@@ -21,7 +21,7 @@ import java.util.Map;
 public class ShopController {
     private final ShopService shopService;
 
-    @ApiOperation(value = "Create a shop", notes = "가게의 정보를 받아 db에 저장한다.")
+    @ApiOperation(value = "가게 등록", notes = "가게의 정보를 받아 db에 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
@@ -32,7 +32,7 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.CREATED).body(status);
     }
 
-    @ApiOperation(value = "Get all shop", notes = "모든 가게 조회한다.")
+    @ApiOperation(value = "조건없이 모든 가게 조회", notes = "모든 가게 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
@@ -43,6 +43,7 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.OK).body(shopDtoList);
     }
 
+    @ApiOperation(value = "Id를 통해 특정 가게 조회", notes = "ID를 통해 특정 가게의 정보 조회한다.")
     @ApiOperation(value = "Get a shop by ID", notes = "ID를 통해 특정 가게의 정보와 대표메뉴를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
@@ -54,22 +55,22 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.OK).body(shopDto);
     }
 
-    @ApiOperation(value = "Get shops By Filtering",
+    @ApiOperation(value = "클라이언트가 조건을 선택하여 가게를 검색",
             notes = "카테고리(String) ex)" + "{이자카야, 치킨, 포차, 해산물, 고기&구이, 칵테일, 맥주, 기타},\n" +
             "인원수(integer) 2~4-> 4, 4~6 -> 6, 7인 이상 ->7\n" +
             "끝나는 시간(integer) ex)~22 -> 22, ~00 -> 24 , ~02 -> 26, ~04 ->28\n" +
-                    "******형식 꼭 맞춰서 데이터 넘겨줄 것*******")
+                    "******형식 꼭 맞춰서 데이터 넘겨줄 것******")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "error")
     })
-    @PostMapping("/lists")
+    @PostMapping("/filter")
     public ResponseEntity<List<ResponseShop>> getShopByFiltering(@RequestBody RequestShop requestShop){
         List<ResponseShop> responseShopList = shopService.getShopByFiltering(requestShop);
         return ResponseEntity.status(HttpStatus.OK).body(responseShopList);
     }
 
-    @ApiOperation(value = "Update a shop by ID", notes = "ID를 통해 받은 가게의 정보 수정한다.")
+    @ApiOperation(value = "Id를 통해 특정 가게의 정보 수정", notes = "ID를 통해 받은 가게의 정보 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "error")
@@ -81,7 +82,7 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.OK).body(status);
     }
 
-    @ApiOperation(value = "Delete a shop by ID", notes = "ID를 통해 받은 가게를 db에서 삭제한다.")
+    @ApiOperation(value = "Id를 통해 특정 가게 db에서 삭제", notes = "ID를 통해 받은 가게를 db에서 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "error")
