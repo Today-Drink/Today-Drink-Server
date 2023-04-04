@@ -1,4 +1,4 @@
-package com.example.todaydrinkserver.user;
+package com.example.todaydrinkserver.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
