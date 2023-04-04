@@ -21,8 +21,8 @@ public class UserService {
     private final FavoriteShopRepository favoriteShopRepository;
     private final ShopRepository shopRepository;
     @Transactional
-    public UserDto getUser(Long userSn){
-        Optional<User> user = userRepository.findById(userSn);
+    public UserDto getUser(String userId){
+        Optional<User> user = userRepository.findByUserId(userId);
         List<FavoriteShop> favoriteShops = favoriteShopRepository.findAllByUser(user.get());
         List<ShopDto> shopList = new ArrayList<>();
 

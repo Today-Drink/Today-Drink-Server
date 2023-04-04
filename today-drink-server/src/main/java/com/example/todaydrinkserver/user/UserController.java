@@ -1,6 +1,7 @@
 package com.example.todaydrinkserver.user;
 
 import com.example.todaydrinkserver.shop.ShopDto;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -24,9 +26,10 @@ public class UserController {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
     })
-    @GetMapping(value = "/view/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> viewUser(@PathVariable("id") Long userSn){
-        UserDto userDto = userService.getUser(userSn);
+    @GetMapping(value = "/view", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> viewUser(Authentication authentication){
+        String userId = authentication.getName();
+        UserDto userDto = userService.getUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 
