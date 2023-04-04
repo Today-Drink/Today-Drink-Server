@@ -1,5 +1,6 @@
 package com.example.todaydrinkserver.user;
 
+import com.example.todaydrinkserver.jwt.JwtTokenProvider;
 import com.example.todaydrinkserver.shop.ShopRepository;
 import com.example.todaydrinkserver.shop.Shop;
 import com.example.todaydrinkserver.shop.ShopDto;

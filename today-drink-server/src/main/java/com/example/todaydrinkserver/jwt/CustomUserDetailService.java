@@ -1,5 +1,6 @@
-package com.example.todaydrinkserver.user;
+package com.example.todaydrinkserver.jwt;
 
+import com.example.todaydrinkserver.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
