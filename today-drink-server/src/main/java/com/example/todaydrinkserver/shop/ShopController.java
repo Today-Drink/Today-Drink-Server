@@ -1,5 +1,7 @@
 package com.example.todaydrinkserver.shop;
 
+import com.example.todaydrinkserver.menu.MenuDto;
+import com.example.todaydrinkserver.menu.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/shops")
@@ -40,7 +43,7 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.OK).body(shopDtoList);
     }
 
-    @ApiOperation(value = "Get a shop by ID", notes = "ID를 통해 특정 가게의 정보 조회한다.")
+    @ApiOperation(value = "Get a shop by ID", notes = "ID를 통해 특정 가게의 정보와 대표메뉴를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "error")
