@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags="User Controller")
 public class UserController {
     private final UserService userService;
-    @ApiOperation(value = "user info", notes = "user의 정보")
+    @ApiOperation(value = "사용자 정보 조회", notes = "로그인 시 발급받은 토큰을 헤더로 넘겨주면 로그인한 user의 정보를 저장한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 
-    @ApiOperation(value = "choose favorite shop", notes = "관심있는 shop 등록")
+    @ApiOperation(value = "사용자가 관심있는 가게 등록", notes = "user가 관심있는 shop을 등록한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
@@ -44,7 +44,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(status);
     }
 
-    @ApiOperation(value = "join", notes = "회원가입")
+    @ApiOperation(value = "회원가입", notes = "회원가입 시 db에 user 정보가 저장된다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
@@ -55,7 +55,7 @@ public class UserController {
         return status;
     }
 
-    @ApiOperation(value = "login", notes = "로그인")
+    @ApiOperation(value = "로그인", notes = "로그인 시 토큰을 response한다.(유효시간 30분)")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
