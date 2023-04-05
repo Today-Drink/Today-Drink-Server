@@ -19,9 +19,21 @@ public class MenuService {
     }
 
     @Transactional
-    public List<MenuDto> getCategoryMenus(String category){
+    public List<MenuDto> getCategoryMenusByShopName(String category, String shopName){
         List<Menu> menuList = menuRepository.findByCategory(category);
-        return getMenuDtos(menuList);
+        List<MenuDto> menuDtoList = new ArrayList<>();
+        menuList.forEach(v->{
+            if(v.getShopName().equals(shopName)){
+                menuDtoList.add(MenuDto.builder()
+                        .name(v.getName())
+                        .price(v.getPrice())
+                        .image(v.getImage())
+                        .description(v.getDescription())
+                        .shopName(v.getShopName())
+                        .build());
+            }
+        });
+        return menuDtoList;
     }
 
     private List<MenuDto> getMenuDtos(List<Menu> menuList) {
