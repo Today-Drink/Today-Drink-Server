@@ -18,5 +18,7 @@ public class ShopDto {
     private String address;
     private Double latitude;
     private Double longitude;
+
+    private String shopImage;
     private List<MenuDto> menus;
 }
