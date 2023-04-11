@@ -24,6 +24,7 @@ public class ShopService {
                 .address(shopDto.getAddress())
                 .latitude(shopDto.getLatitude())
                 .longitude(shopDto.getLongitude())
+                .shopImage(shopDto.getShopImage())
                 .build();
         shopRepository.save(shopEntity);
         return "register success";
@@ -43,6 +44,7 @@ public class ShopService {
                     .address(v.getAddress())
                     .latitude(v.getLatitude())
                     .longitude(v.getLongitude())
+                    .shopImage(v.getShopImage())
                     .build());
         });
         return shopDtoList;
@@ -60,6 +62,7 @@ public class ShopService {
                         .price(menu.getPrice())
                         .description(menu.getDescription())
                         .shopName(menu.getShopName())
+                        .image(menu.getImage())
                         .build();
                 menuDtoList.add(menuDto);
             }
@@ -73,6 +76,7 @@ public class ShopService {
                 .address(shopEntity.getAddress())
                 .latitude(shopEntity.getLatitude())
                 .longitude(shopEntity.getLongitude())
+                .shopImage(shopEntity.getShopImage())
                 .menus(menuDtoList)
                 .build();
         return shopDto;

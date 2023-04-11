@@ -41,6 +41,9 @@ public class Shop {
     @Column(name = "longitude")
     private Double longitude;
 
+    @Column(name="shop_image")
+    private String shopImage;
+
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> menus;
 
