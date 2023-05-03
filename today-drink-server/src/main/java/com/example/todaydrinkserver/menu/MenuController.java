@@ -18,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Api(tags = "Menu Controller")
 public class MenuController {
+    // 메뉴
     private final MenuService menuService;
 
     @ApiOperation(value = "선택한 가게의 메뉴 조회",
