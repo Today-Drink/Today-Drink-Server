@@ -28,7 +28,7 @@ public class MenuController {
             @ApiResponse(code = 404, message = "error")
     })
     @GetMapping("")
-    public ResponseEntity<Map<String,Object>> getAllMenus(@RequestParam("name") String shopName) {
+    public ResponseEntity<Map<String,Object>>  getAllMenus(@RequestParam("name") String shopName) {
         List<MenuDto> mainMenus = menuService.getCategoryMenusByShopName("main",shopName);
         List<MenuDto> subMenus = menuService.getCategoryMenusByShopName("sub",shopName);
         List<MenuDto> drinks = menuService.getCategoryMenusByShopName("drink",shopName);
