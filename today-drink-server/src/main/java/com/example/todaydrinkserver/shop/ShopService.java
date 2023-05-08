@@ -32,7 +32,7 @@ public class ShopService {
 
     @Transactional
     public List<ShopDto> getShopByAll(){
-        List<Shop> shopEntityList = shopRepository.findAll();
+        List<Shop> shopEntityList = shopRepository.findAllByOrderByIdAsc();
 
         List<ShopDto> shopDtoList = new ArrayList<>();
         shopEntityList.forEach(v-> {
