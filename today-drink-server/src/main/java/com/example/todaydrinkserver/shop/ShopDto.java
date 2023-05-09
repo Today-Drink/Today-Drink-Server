@@ -16,6 +16,8 @@ public class ShopDto {
     private Integer num;
     private Integer endTime;
     private String address;
+    private String tel;
+    private Double star;
     private Double latitude;
     private Double longitude;
 

@@ -12,11 +12,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MenuService {
     private final MenuRepository menuRepository;
-    @Transactional
-    public List<MenuDto> getAllMenus() {
-        List<Menu> menuList = menuRepository.findAll();
-        return getMenuDtos(menuList);
-    }
+//    @Transactional
+//    public List<MenuDto> getAllMenus() {
+//        List<Menu> menuList = menuRepository.findAll();
+//        return getMenuDtos(menuList);
+//    }
 
     @Transactional
     public List<MenuDto> getCategoryMenusByShopName(String category, String shopName){
@@ -50,29 +50,29 @@ public class MenuService {
         return menuDtoList;
     }
 
-    @Transactional
-    public MenuDto getMenuById(Long id) {
-        Optional<Menu> optionalMenu = menuRepository.findById(id);
-        if (optionalMenu.isPresent()) {
-            Menu menu = optionalMenu.get();
-            MenuDto menuDto = MenuDto.builder()
-                    .name(menu.getName())
-                    .price(menu.getPrice())
-                    .image(menu.getImage())
-                    .description(menu.getDescription())
-                    .shopName(menu.getShopName())
-                    .build();
-            return menuDto;
-        } else {
-            throw new MenuNotFoundException("Menu not found");
-        }
-    }
-
-    @Transactional
-    public List<MenuDto> getMenusByShopName(String shopName) {
-        List<Menu> menus = menuRepository.findByShopName(shopName);
-        return getMenuDtos(menus);
-    }
+//    @Transactional
+//    public MenuDto getMenuById(Long id) {
+//        Optional<Menu> optionalMenu = menuRepository.findById(id);
+//        if (optionalMenu.isPresent()) {
+//            Menu menu = optionalMenu.get();
+//            MenuDto menuDto = MenuDto.builder()
+//                    .name(menu.getName())
+//                    .price(menu.getPrice())
+//                    .image(menu.getImage())
+//                    .description(menu.getDescription())
+//                    .shopName(menu.getShopName())
+//                    .build();
+//            return menuDto;
+//        } else {
+//            throw new MenuNotFoundException("Menu not found");
+//        }
+//    }
+//
+//    @Transactional
+//    public List<MenuDto> getMenusByShopName(String shopName) {
+//        List<Menu> menus = menuRepository.findByShopName(shopName);
+//        return getMenuDtos(menus);
+//    }
 
     @Transactional
     public MenuDto createMenu(MenuDto menuDto) {
