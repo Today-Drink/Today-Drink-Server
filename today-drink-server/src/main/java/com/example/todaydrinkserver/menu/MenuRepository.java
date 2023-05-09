@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-    List<Menu> findByShopName(String shopName);
+    //List<Menu> findByShopName(String shopName);
     List<Menu> findByCategory(String category);
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Menu m SET m.name = :name, m.price = :price, m.image = :image,m.description= :description, m.shopName = :shopName WHERE m.id = :id")

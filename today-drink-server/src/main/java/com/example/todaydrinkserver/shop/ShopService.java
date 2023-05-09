@@ -22,6 +22,8 @@ public class ShopService {
                 .num(shopDto.getNum())
                 .endTime(shopDto.getEndTime())
                 .address(shopDto.getAddress())
+                .tel(shopDto.getTel())
+                .star(shopDto.getStar())
                 .latitude(shopDto.getLatitude())
                 .longitude(shopDto.getLongitude())
                 .shopImage(shopDto.getShopImage())
@@ -31,26 +33,24 @@ public class ShopService {
     }
 
     @Transactional
-    public List<ShopDto> getShopByAll(){
+    public List<ResponseAllShop> getShopByAll(){
         List<Shop> shopEntityList = shopRepository.findAllByOrderByIdAsc();
 
-        List<ShopDto> shopDtoList = new ArrayList<>();
+        List<ResponseAllShop> responseShopList = new ArrayList<>();
         shopEntityList.forEach(v-> {
-            shopDtoList.add(ShopDto.builder()
+            responseShopList.add(ResponseAllShop.builder()
                     .name(v.getName())
                     .classify(v.getClassify())
-                    .num(v.getNum())
-                    .endTime(v.getEndTime())
                     .address(v.getAddress())
-                    .latitude(v.getLatitude())
-                    .longitude(v.getLongitude())
+                    .tel(v.getTel())
+                    .star(v.getStar())
                     .shopImage(v.getShopImage())
                     .build());
         });
-        return shopDtoList;
+        return responseShopList;
     }
     @Transactional
-    public ShopDto getShop(Long id){
+    public ResponseShop getShop(Long id){
         Shop shopEntity = shopRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Invalid shop ID"));
 
@@ -68,18 +68,16 @@ public class ShopService {
             }
         });
 
-        ShopDto shopDto = ShopDto.builder()
+        ResponseShop responseShop = ResponseShop.builder()
                 .name(shopEntity.getName())
                 .classify(shopEntity.getClassify())
-                .num(shopEntity.getNum())
-                .endTime(shopEntity.getEndTime())
+                .star(shopEntity.getStar())
+                .tel(shopEntity.getTel())
                 .address(shopEntity.getAddress())
-                .latitude(shopEntity.getLatitude())
-                .longitude(shopEntity.getLongitude())
                 .shopImage(shopEntity.getShopImage())
                 .menus(menuDtoList)
                 .build();
-        return shopDto;
+        return responseShop;
     }
     @Transactional
     public List<ResponseShop> getShopByFiltering(RequestShop requestShop){
@@ -93,8 +91,9 @@ public class ShopService {
             responseShopList.add(ResponseShop.builder()
                     .name(v.getName())
                     .address(v.getAddress())
-                    .latitude(v.getLatitude())
-                    .longitude(v.getLongitude())
+                    .tel(v.getTel())
+                    .star(v.getStar())
+                    .classify(v.getClassify())
                     .build());
         });
         return responseShopList;
@@ -108,5 +107,16 @@ public class ShopService {
     public String deleteShop(Long id){
         shopRepository.deleteById(id);
         return "success";
+    }
+
+    public ResponseMap getLocationById(Long id){
+        Shop shop = shopRepository.findById(id).get();
+        ResponseMap responseMap = ResponseMap.builder()
+                .name(shop.getName())
+                .address(shop.getAddress())
+                .latitude(shop.getLatitude())
+                .longitude(shop.getLongitude())
+                .build();
+        return responseMap;
     }
 }

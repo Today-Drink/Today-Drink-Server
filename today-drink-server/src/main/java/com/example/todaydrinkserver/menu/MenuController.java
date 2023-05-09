@@ -21,8 +21,8 @@ public class MenuController {
     // 메뉴
     private final MenuService menuService;
 
-    @ApiOperation(value = "선택한 가게의 메뉴 조회",
-            notes = "특정 가게 선택 시 카테고리(main, sub, drink) 별로 모든 메뉴를 확인한다.")
+    @ApiOperation(value = "가게 이름으로 선택한 가게의 모든 메뉴 조회",
+            notes = "가게 상세보기에서 [전체보기] 선택")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
@@ -38,18 +38,6 @@ public class MenuController {
         result.put("drink",drinks);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-    @ApiOperation(value = "id를 통해 특정 메뉴 조회",
-            notes = "id를 통해 특정 메뉴 조회한다.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 404, message = "error")
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<MenuDto> getMenuById(@PathVariable("id") Long id) {
-        MenuDto menuDto = menuService.getMenuById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(menuDto);
-    }
-
     @ApiOperation(value = "메뉴 등록", notes = "메뉴 정보를 받아 db에 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),

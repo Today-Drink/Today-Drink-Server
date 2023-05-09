@@ -44,6 +44,12 @@ public class Shop {
     @Column(name="shop_image")
     private String shopImage;
 
+    @Column(name = "tel")
+    private String tel;
+
+    @Column(name = "star")
+    private Double star;
+
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> menus;
 
