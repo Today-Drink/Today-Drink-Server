@@ -7,13 +7,27 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-
 @Service
 @AllArgsConstructor
 @Slf4j
 public class ShopService {
     private final ShopRepository shopRepository;
 
+    public List<ResponseAllShop> getShopsByStar(){
+        List<Shop> shops = shopRepository.findAllByOrderByStarDesc();
+        List<ResponseAllShop> responseShopList = new ArrayList<>();
+        shops.forEach(v-> {
+            responseShopList.add(ResponseAllShop.builder()
+                    .name(v.getName())
+                    .classify(v.getClassify())
+                    .address(v.getAddress())
+                    .tel(v.getTel())
+                    .star(v.getStar())
+                    .shopImage(v.getShopImage())
+                    .build());
+        });
+        return responseShopList;
+    }
     @Transactional
     public String registerShop(ShopDto shopDto){
         Shop shopEntity = Shop.builder()
@@ -119,4 +133,5 @@ public class ShopService {
                 .build();
         return responseMap;
     }
+
 }

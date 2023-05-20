@@ -99,4 +99,15 @@ public class ShopController {
         ResponseMap responseMap = shopService.getLocationById(id);
         return ResponseEntity.status(HttpStatus.OK).body(responseMap);
     }
+
+    @ApiOperation(value = "가게 별점 높은순 정렬", notes = "별점 높은순으로 보기")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "error")
+    })
+    @GetMapping("/by-star")
+    public ResponseEntity<List<ResponseAllShop>> getShopsByStar() {
+        List<ResponseAllShop> sortedShops = shopService.getShopsByStar();
+        return ResponseEntity.status(HttpStatus.OK).body(sortedShops);
+    }
 }

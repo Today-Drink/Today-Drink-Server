@@ -11,4 +11,5 @@ public interface ShopRepository extends JpaRepository<Shop,Long>, QuerydslPredic
 
     Optional<Shop> findByName(String shopName);
     List<Shop> findAllByOrderByIdAsc();
+    List<Shop> findAllByOrderByStarDesc();
 }

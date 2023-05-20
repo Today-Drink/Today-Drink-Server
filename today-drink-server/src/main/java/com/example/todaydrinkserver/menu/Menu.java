@@ -1,6 +1,7 @@
 package com.example.todaydrinkserver.menu;
 
 import com.example.todaydrinkserver.shop.Shop;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,5 +39,6 @@ public class Menu {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Shop shop;
 }
