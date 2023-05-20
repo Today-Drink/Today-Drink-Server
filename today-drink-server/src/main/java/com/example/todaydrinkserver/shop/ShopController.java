@@ -99,4 +99,10 @@ public class ShopController {
         ResponseMap responseMap = shopService.getLocationById(id);
         return ResponseEntity.status(HttpStatus.OK).body(responseMap);
     }
+
+    @GetMapping("/by-star")
+    public ResponseEntity<List<Shop>> getShopsByStar() {
+        List<Shop> sortedShops = shopService.getShopsByStar();
+        return ResponseEntity.status(HttpStatus.OK).body(sortedShops);
+    }
 }

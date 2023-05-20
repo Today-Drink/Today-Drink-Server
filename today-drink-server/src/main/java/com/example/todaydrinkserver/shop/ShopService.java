@@ -3,16 +3,45 @@ package com.example.todaydrinkserver.shop;
 import com.example.todaydrinkserver.menu.MenuDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class ShopService {
     private final ShopRepository shopRepository;
+    private final RedisTemplate<String,Shop> redisTemplate;
+
+    @Transactional
+    public void loadDataIntoRedis() {
+        List<Shop> shops = shopRepository.findAll();
+//        for (Shop shop : shops) {
+//            Hibernate.initialize(shop.getMenus());
+//        }
+        //별점이 높은 순서로 Shop 객체를 정렬합니다.
+        shops.sort(Comparator.comparing(Shop::getStar).reversed());
+
+        //정렬된 Shop 객체를 Redis의 Sorted Set에 추가합니다. 여기서 키는 "shop:star"이고, 값은 Shop 객체이며, 점수는 별점입니다.
+        shops.forEach(shop -> redisTemplate.opsForZSet().add("shop:star", shop, shop.getStar()));
+    }
+
+    /**
+     * Set<Shop> sortedShops = redisTemplate.opsForZSet().reverseRange("shop:star", 0, -1);
+     * -> Redis의 Sorted Set에서 키가 "shop:star"인 모든 Shop 객체를 별점이 높은 순서로 가져옵니다. reverseRange 메서드의 인자 0과 -1은 전체
+     * 범위를 가져오기 위한 값입니다.
+     * @return 가져온 Shop 객체의 Sorted Set을 ArrayList로 변환한 후 반환합니다.
+     */
+    public List<Shop> getShopsByStar() {
+        Set<Shop> sortedShops = redisTemplate.opsForZSet().reverseRange("shop:star", 0, -1);
+        return new ArrayList<>(sortedShops);
+    }
 
     @Transactional
     public String registerShop(ShopDto shopDto){
@@ -119,4 +148,5 @@ public class ShopService {
                 .build();
         return responseMap;
     }
+
 }
