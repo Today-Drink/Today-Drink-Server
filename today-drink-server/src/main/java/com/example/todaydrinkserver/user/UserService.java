@@ -7,6 +7,7 @@ import com.example.todaydrinkserver.shop.Shop;
 import com.example.todaydrinkserver.shop.ShopDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -67,7 +68,7 @@ public class UserService {
         User user = User.builder()
                 .userId(newUser.getUserId())
                 .userName(newUser.getUserName())
-                .userPwd(newUser.getUserPwd())
+                .userPwd(newUser.getUserPw())
                 .build();
         userRepository.save(user);
         return "SUCCESS";
@@ -79,8 +80,10 @@ public class UserService {
         User member = userRepository.findByUserId(requestLogin.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
 
+        log.info("request pw=>{}, member pw=>{}", requestLogin.getUserPw(), member.getUserPwd());
+
         // 로그인 시 패스워드가 불일치하면 에러 발생(passwordEncoder이용?)
-        if (requestLogin.getUserPw().equals(member.getPassword())){
+        if (!requestLogin.getUserPw().equals(member.getUserPwd())){
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
         TokenDTO token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles());

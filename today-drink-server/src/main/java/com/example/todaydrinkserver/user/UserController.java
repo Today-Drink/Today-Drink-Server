@@ -33,7 +33,9 @@ public class UserController {
     })
     @GetMapping(value = "/view", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> viewUser(Authentication authentication){
+        log.info("authen=>{}", authentication);
         String userId = authentication.getName();
+        log.info("userId=>{}",userId);
         UserDto userDto = userService.getUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }

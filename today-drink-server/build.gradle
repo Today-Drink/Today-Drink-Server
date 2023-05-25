@@ -36,6 +36,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	implementation group: 'org.springframework.security', name: 'spring-security-crypto'
+	implementation group: 'org.bouncycastle', name: 'bcprov-jdk16'
+
+
 }
 // Qtype 생성 경로
 def querydslDir = "$buildDir/generated/querydsl"
