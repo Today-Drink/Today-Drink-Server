@@ -1,5 +1,7 @@
 package com.example.todaydrinkserver.shop;
 
+import com.example.todaydrinkserver.menu.MenuDto;
+import com.example.todaydrinkserver.menu.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/shops")
@@ -36,8 +39,8 @@ public class ShopController {
     })
     @GetMapping("")
     public ResponseEntity<List<ResponseAllShop>> getAllShop(){
-        List<ResponseAllShop> responseShopList = shopService.getShopByAll();
-        return ResponseEntity.status(HttpStatus.OK).body(responseShopList);
+        List<ResponseAllShop> shopDtoList = shopService.getShopByAll();
+        return ResponseEntity.status(HttpStatus.OK).body(shopDtoList);
     }
 
     @ApiOperation(value = "Id를 통해 특정 가게 조회", notes = "ID를 통해 특정 가게의 정보와 대표메뉴를 조회한다.")
@@ -47,8 +50,8 @@ public class ShopController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<ResponseShop> getShopById(@PathVariable("id") Long id){
-        ResponseShop responseShop = shopService.getShop(id);
-        return ResponseEntity.status(HttpStatus.OK).body(responseShop);
+        ResponseShop shopDto = shopService.getShop(id);
+        return ResponseEntity.status(HttpStatus.OK).body(shopDto);
     }
 
     @ApiOperation(value = "클라이언트가 조건을 선택하여 가게를 검색",
@@ -87,27 +90,5 @@ public class ShopController {
     public ResponseEntity deleteShop(@PathVariable("id") Long id){
         String status = shopService.deleteShop(id);
         return ResponseEntity.status(HttpStatus.OK).body(status);
-    }
-
-    @ApiOperation(value = "가게 위치 지도 표시", notes = "가게 상세정보에서 [지도보기] 클릭")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 404, message = "error")
-    })
-    @GetMapping("{id}/map")
-    public ResponseEntity<ResponseMap> getLocationById(@PathVariable("id") Long id){
-        ResponseMap responseMap = shopService.getLocationById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(responseMap);
-    }
-
-    @ApiOperation(value = "가게 별점 높은순 정렬", notes = "별점 높은순으로 보기")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 404, message = "error")
-    })
-    @GetMapping("/by-star")
-    public ResponseEntity<List<ResponseAllShop>> getShopsByStar() {
-        List<ResponseAllShop> sortedShops = shopService.getShopsByStar();
-        return ResponseEntity.status(HttpStatus.OK).body(sortedShops);
     }
 }

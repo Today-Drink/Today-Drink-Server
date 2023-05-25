@@ -1,6 +1,7 @@
 package com.example.todaydrinkserver.user;
 
 import com.example.todaydrinkserver.jwt.JwtTokenProvider;
+import com.example.todaydrinkserver.jwt.TokenDTO;
 import com.example.todaydrinkserver.shop.ShopRepository;
 import com.example.todaydrinkserver.shop.Shop;
 import com.example.todaydrinkserver.shop.ShopDto;
@@ -62,23 +63,32 @@ public class UserService {
     }
 
     @Transactional
-    public String registerUser(UserDto userDto){
+    public String registerUser(RequestSignup newUser){
         User user = User.builder()
-                .userId(userDto.getUserId())
-                .userName(userDto.getUserName())
-                .userPwd(userDto.getUserPwd())
+                .userId(newUser.getUserId())
+                .userName(newUser.getUserName())
+                .userPwd(newUser.getUserPwd())
                 .build();
         userRepository.save(user);
-        return "save User";
+        return "SUCCESS";
     }
 
     @Transactional
-    public String login(RequestLogin requestLogin){
+    public ResponseLogin login(RequestLogin requestLogin){
         log.info("user id = {}", requestLogin.getUserId());
         User member = userRepository.findByUserId(requestLogin.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
 
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+        // 로그인 시 패스워드가 불일치하면 에러 발생(passwordEncoder이용?)
+        if (requestLogin.getUserPw().equals(member.getPassword())){
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        TokenDTO token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+
+        return ResponseLogin.builder()
+                .accessToken(token.getAccessToken())
+                .refreshToken(token.getRefreshToken())
+                .build();
     }
 
     public boolean logout(UserDto userDto){

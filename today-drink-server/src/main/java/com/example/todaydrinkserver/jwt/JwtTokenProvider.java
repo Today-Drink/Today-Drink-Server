@@ -23,23 +23,38 @@ import java.util.List;
 public class JwtTokenProvider {
     @Value(value = "${jwt.secret}")
     private String secretKey;
-    @Value(value = "${jwt.token-validity-in-seconds}")
-    private long tokenValidTime;
+    @Value(value = "${jwt.live.atk}")
+    private long accessTokenValidTime;
+
+    @Value(value = "${jwt.live.rtk}")
+    private long refreshTokenValidTime;
 
     private final UserDetailsService userDetailsService;
 
     // JWT 토큰 생성
-    public String createToken(String userPk, List<String> roles) {
+    public TokenDTO createToken(String userPk, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
-        return Jwts.builder()
+
+        // Access Token
+        String accessToken = Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time
+                .setExpiration(new Date(now.getTime() + accessTokenValidTime)) // set Expire Time
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
                 // signature 에 들어갈 secret값 세팅
                 .compact();
+
+        // Refresh Token
+        String refreshToken = Jwts.builder()
+                .setClaims(claims) // 정보 저장
+                .setIssuedAt(now) // 토큰 발행 시간 정보
+                .setExpiration(new Date(now.getTime() + refreshTokenValidTime)) // set Expire Time
+                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
+                // signature 에 들어갈 secret값 세팅
+                .compact();
+        return TokenDTO.builder().accessToken(accessToken).refreshToken(refreshToken).key(userPk).build();
     }
 
     // JWT 토큰에서 인증 정보 조회
@@ -67,5 +82,15 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // refresh 토큰의 유효성 + 만료일자 확인
+    public void validateREfreshToken(){
+
+    }
+
+    // accessToken 재발급
+    public void recreationAccessToken(){
+
     }
 }

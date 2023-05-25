@@ -54,7 +54,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword(){
-        return  null;
+        return  userPwd;
     }
 
     @Override
