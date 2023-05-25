@@ -2,17 +2,22 @@ package com.example.todaydrinkserver.user;
 
 import com.example.todaydrinkserver.shop.ShopDto;
 import io.jsonwebtoken.Claims;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -50,19 +55,47 @@ public class UserController {
             @ApiResponse(code = 404, message = "error")
     })
     @PostMapping("/join")
-    public String join(@RequestBody UserDto userDto){
-        String status = userService.registerUser(userDto);
-        return status;
+    public ResponseEntity<Result> join(@RequestBody @Valid RequestSignup newUser, BindingResult bindingResult){
+        Result result = new Result();
+        // 검증
+        if(bindingResult.hasErrors()){
+            Map<String, String> errorMap = new HashMap<>();
+            for(FieldError error : bindingResult.getFieldErrors()){
+                errorMap.put("valid_"+error.getField(), error.getDefaultMessage());
+                log.info("error message:"+error.getDefaultMessage());
+            }
+            result.setResult("FAIL");
+            result.setMessage(errorMap);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
+
+        String status = userService.registerUser(newUser);
+        result.setResult(status);
+        result.setMessage("회원가입에 성공했습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "로그인", notes = "로그인 시 토큰을 response한다.(유효시간 30분)")
+    @Data
+    @AllArgsConstructor
+    static class Result{
+        private String result;
+        private Object message;
+
+        public Result(){
+
+        }
+    }
+    @ApiOperation(value = "로그인", notes = "로그인 시 refresh token(2weeks)과 access token(24hours)을 response한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
     })
     @PostMapping("/login")
-    public String login(@RequestBody RequestLogin requestLogin){
-        String token = userService.login(requestLogin);
-        return token;
+    public ResponseLogin login(@RequestBody RequestLogin requestLogin){
+        log.info("id={}, pw={}", requestLogin.getUserId(), requestLogin.getUserPw());
+        ResponseLogin tokens = userService.login(requestLogin);
+        return tokens;
     }
 }
+
+
