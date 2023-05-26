@@ -1,5 +1,8 @@
 package com.example.todaydrinkserver.user;
 
+import com.example.todaydrinkserver.shop.RequestShop;
+import com.example.todaydrinkserver.shop.ResponseAllShop;
+import com.example.todaydrinkserver.shop.ResponseShop;
 import com.example.todaydrinkserver.shop.ShopDto;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
@@ -13,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -64,5 +69,31 @@ public class UserController {
     public String login(@RequestBody RequestLogin requestLogin){
         String token = userService.login(requestLogin);
         return token;
+    }
+
+    @ApiOperation(value = "클라이언트가 조건을 선택하여 가게를 검색",
+            notes = "분류, 인원수, 시간 선택하여 request 날린 후 성공하면 [필터가 적용되었습니다.] 반환")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "error")
+    })
+    @PostMapping("/shops/{id}")
+    public ResponseEntity<String> getShopByFiltering(@PathVariable(name = "id") Long userId,
+                                                @RequestBody RequestShop requestShop) {
+        userService.updateUserShopList(userId, requestShop);
+        return ResponseEntity.status(HttpStatus.OK).body("필터가 적용되었습니다.");
+    }
+
+    @ApiOperation(value = "user가 필터에서 선택한 가게 조회",
+            notes = "아직 필터기능 이용 안했을 시 모든 필드에 null값 반환\n" +
+                    "필터에서 조건 선택했을 시 조건에 맞는 가게 리스트 반환")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "error")
+    })
+    @GetMapping("/shops/{id}")
+    public ResponseEntity<List<ResponseAllShop>> getShopList(@PathVariable(name = "id") Long userSn){
+        List<ResponseAllShop> responseAllShops = userService.getShopList(userSn);
+        return ResponseEntity.status(HttpStatus.OK).body(responseAllShops);
     }
 }

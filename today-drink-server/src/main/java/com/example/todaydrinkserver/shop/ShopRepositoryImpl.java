@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 public class ShopRepositoryImpl implements ShopRepositoryCustom{
     @PersistenceContext
