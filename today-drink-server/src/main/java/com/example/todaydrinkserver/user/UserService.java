@@ -1,6 +1,7 @@
 package com.example.todaydrinkserver.user;
 
 import com.example.todaydrinkserver.jwt.JwtTokenProvider;
+import com.example.todaydrinkserver.shop.*;
 import com.example.todaydrinkserver.jwt.TokenDTO;
 import com.example.todaydrinkserver.shop.ShopRepository;
 import com.example.todaydrinkserver.shop.Shop;
@@ -94,6 +95,45 @@ public class UserService {
                 .build();
     }
 
+    @Transactional
+    public void updateUserShopList(Long id, RequestShop requestShop) {
+        List<Shop> shops= shopRepository.findShopByFiltering(
+                requestShop.getClassify(),
+                requestShop.getNum(),
+                requestShop.getEndTime());
+
+        userRepository.updateUserShopList(id,shops);
+    }
+
+    @Transactional
+    public List<ResponseAllShop> getShopList(Long id){
+        User user = userRepository.findById(id).get();
+        List<ResponseAllShop> responseAllShops = new ArrayList<>();
+        List<Shop> shops = user.getShops();
+        if (shops != null && !shops.isEmpty()) {
+            shops.forEach(v -> {
+                responseAllShops.add(ResponseAllShop.builder()
+                        .name(v.getName())
+                        .address(v.getAddress())
+                        .tel(v.getTel())
+                        .star(v.getStar())
+                        .classify(v.getClassify())
+                        .shopImage(v.getShopImage())
+                        .build());
+            });
+        } else {
+            ResponseAllShop responseAllShop = ResponseAllShop.builder()
+                    .name(null)
+                    .tel(null)
+                    .address(null)
+                    .shopImage(null)
+                    .classify(null)
+                    .star(0.0)
+                    .build();
+            responseAllShops.add(responseAllShop);
+        }
+        return responseAllShops;
+    }
     public boolean logout(UserDto userDto){
        return true;
     }

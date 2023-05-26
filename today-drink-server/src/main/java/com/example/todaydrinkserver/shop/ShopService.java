@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -94,25 +96,6 @@ public class ShopService {
         return responseShop;
     }
     @Transactional
-    public List<ResponseShop> getShopByFiltering(RequestShop requestShop){
-        List<Shop> shops= shopRepository.findShopByFiltering(
-                requestShop.getClassify(),
-                requestShop.getNum(),
-                requestShop.getEndTime());
-
-        List<ResponseShop> responseShopList = new ArrayList<>();
-        shops.forEach(v-> {
-            responseShopList.add(ResponseShop.builder()
-                    .name(v.getName())
-                    .address(v.getAddress())
-                    .tel(v.getTel())
-                    .star(v.getStar())
-                    .classify(v.getClassify())
-                    .build());
-        });
-        return responseShopList;
-    }
-    @Transactional
     public String updateShop(Long id, ShopDto shopDto){
         shopRepository.updateShop(id, shopDto);
         return "success";
@@ -133,5 +116,6 @@ public class ShopService {
                 .build();
         return responseMap;
     }
+
 
 }

@@ -32,7 +32,8 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.CREATED).body(status);
     }
 
-    @ApiOperation(value = "조건없이 모든 가게 조회", notes = "모든 가게 조회한다.(초기 화면)")
+    @ApiOperation(value = "초기화면", notes = "필터 선택 안했을 시 메세지 반환 \n" +
+            "필터 선택된 상태일 시 가게 리스트 반환")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 404, message = "error")
@@ -54,20 +55,6 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.OK).body(shopDto);
     }
 
-    @ApiOperation(value = "클라이언트가 조건을 선택하여 가게를 검색",
-            notes = "카테고리(String) ex)" + "{이자카야, 치킨, 포차, 해산물, 고기&구이, 칵테일, 맥주, 기타},\n" +
-            "인원수(integer) 2~4-> 4, 4~6 -> 6, 7인 이상 ->7\n" +
-            "끝나는 시간(integer) ex)~22 -> 22, ~00 -> 24 , ~02 -> 26, ~04 ->28\n" +
-                    "******형식 꼭 맞춰서 데이터 넘겨줄 것******")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 404, message = "error")
-    })
-    @PostMapping("/filter")
-    public ResponseEntity<List<ResponseShop>> getShopByFiltering(@RequestBody RequestShop requestShop){
-        List<ResponseShop> responseShopList = shopService.getShopByFiltering(requestShop);
-        return ResponseEntity.status(HttpStatus.OK).body(responseShopList);
-    }
 
     @ApiOperation(value = "Id를 통해 특정 가게의 정보 수정", notes = "ID를 통해 받은 가게의 정보 수정한다.")
     @ApiResponses(value = {
