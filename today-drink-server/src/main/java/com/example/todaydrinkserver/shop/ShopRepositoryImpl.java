@@ -54,15 +54,15 @@ public class ShopRepositoryImpl implements ShopRepositoryCustom{
         }
 
         if(shopDto.getTel() != null){
-            update.set(shop.tel, shopDto.getTel());
+            //update.set(shop.tel, shopDto.getTel());
         }
 
         if(shopDto.getStar() != null){
-            update.set(shop.star,shopDto.getStar());
+            //update.set(shop.star,shopDto.getStar());
         }
 
         if(shopDto.getShopImage() !=null){
-            update.set(shop.shopImage, shopDto.getShopImage());
+            //update.set(shop.shopImage, shopDto.getShopImage());
         }
         update.where(builder).execute();
     }
