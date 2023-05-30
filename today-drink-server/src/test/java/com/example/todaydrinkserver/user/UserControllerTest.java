@@ -31,7 +31,7 @@ class UserControllerTest {
         // given
         RequestSignup user = RequestSignup.builder()
                 .userId("chae01")
-                .userPwd("1234")
+                .userPw("1234")
                 .userName("채원")
                 .build();
         String jsonContent = objectMapper.writeValueAsString(user);
