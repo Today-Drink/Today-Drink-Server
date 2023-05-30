@@ -37,7 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	implementation group: 'org.springframework.security', name: 'spring-security-crypto'
-	implementation group: 'org.bouncycastle', name: 'bcprov-jdk16'
+	//implementation group: 'org.bouncycastle', name: 'bcprov-jdk16'
 
 
 }
