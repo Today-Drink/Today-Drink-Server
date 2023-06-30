@@ -111,7 +111,7 @@
 
 
 # 📘 ERD
-![image](https://github.com/Today-Drink/Today-Drink-Server/assets/86958447/202389e4-cbaf-4ceb-bf7d-fd93376ca4c4)
+![image](https://github.com/Today-Drink/Today-Drink-Server/assets/86958447/202389e4-cbaf-4ceb-bf7d-fd93376ca4c4){: width="500" height="600"}
 
 # 🔖 배포 아키텍처
 ![image](https://github.com/Today-Drink/Today-Drink-Server/assets/86958447/ca0d80eb-2333-49c2-8b02-7db42bf3e271)
