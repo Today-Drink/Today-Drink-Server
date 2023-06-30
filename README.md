@@ -21,11 +21,16 @@
 <p>- Docker</p>
 <p>- Jenkins</p>
 
+**명세**
+![image](https://github.com/Today-Drink/Today-Drink-Server/assets/83829352/030ddab2-1a33-4dfd-bd88-cbc6afeda4a7)
+
+
 # 📄 API명세서
 <details>
   <summary>menu</summary>
   <details>
     <summary>메뉴 조회</summary>
+    **메뉴 조회**
     ![image](https://github.com/Today-Drink/Today-Drink-Server/assets/83829352/030ddab2-1a33-4dfd-bd88-cbc6afeda4a7)
 
   </details>
